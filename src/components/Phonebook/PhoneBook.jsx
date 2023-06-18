@@ -1,23 +1,27 @@
+import { filteredContacts } from 'redux/contactsSelectors';
 import s from './Phonebook.module.css';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
 import {
-  deleteContactThunk,
-  fetchContactsThunk,
-} from 'redux/contactsOperations';
-import { selectFilteredContacts } from 'redux/contactsSelectors';
+  useDeleteContactMutation,
+  useGetContactsQuery,
+} from 'redux/contactsSliceApi';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 export const PhoneBook = () => {
-  const dispatch = useDispatch();
-  const filterContacts = useSelector(selectFilteredContacts);
-
-  useEffect(() => {
-    dispatch(fetchContactsThunk());
-  }, [dispatch]);
+  const { data: contacts } = useGetContactsQuery();
+  const [deleteContact] = useDeleteContactMutation();
+  const filter = useSelector(state => state.contacts.filter);
+  // useEffect(() => {
+  //   if (filter === '') return contacts;
+  //   return contacts.filter(contact =>
+  //     contact.name.toLowerCase().includes(filter.toLowerCase())
+  //   );
+  // }, [contacts, filter]);
 
   return (
     <ul className={s.contactsList}>
-      {filterContacts?.map(({ name, number, id }) => {
+      {contacts?.map(({ name, number, id }) => {
         return (
           <li className={s.contactsItem} key={id}>
             <p>
@@ -26,7 +30,7 @@ export const PhoneBook = () => {
             <button
               type="button"
               onClick={() => {
-                dispatch(deleteContactThunk(id));
+                deleteContact(id);
               }}
             >
               Delete

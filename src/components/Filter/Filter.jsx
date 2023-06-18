@@ -6,7 +6,7 @@ import { actions } from 'redux/contactsSlice';
 export const Filter = () => {
   const filter = useSelector(state => state.contacts.filter);
   const dispatch = useDispatch();
-
+  console.log(filter);
   return (
     <div className={s.filterWrap}>
       <label>

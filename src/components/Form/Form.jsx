@@ -1,16 +1,18 @@
 import { useState } from 'react';
 
 import s from './Form.module.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectContacts } from 'redux/contactsSelectors';
-import { addContactThunk } from 'redux/contactsOperations';
+
+import {
+  useAddContactMutation,
+  useGetContactsQuery,
+} from 'redux/contactsSliceApi';
 
 const initialState = { name: '', number: '' };
 
 export const Form = () => {
   const [form, setForm] = useState(initialState);
-  const dispatch = useDispatch();
-  const contacts = useSelector(selectContacts);
+  const { data: contacts } = useGetContactsQuery();
+  const [addContact] = useAddContactMutation();
 
   const handleChange = ({ target: { name, value } }) => {
     setForm(prevForm => {
@@ -24,7 +26,7 @@ export const Form = () => {
       contact => contact.name.toLowerCase() === form.name.toLowerCase()
     )
       ? alert(`${form.name} is already in contacts!`)
-      : dispatch(addContactThunk(form));
+      : addContact(form);
     setForm(initialState);
   };
 
