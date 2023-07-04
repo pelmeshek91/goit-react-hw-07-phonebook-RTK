@@ -6,22 +6,22 @@ import {
   useGetContactsQuery,
 } from 'redux/contactsSliceApi';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
 
 export const PhoneBook = () => {
   const { data: contacts } = useGetContactsQuery();
   const [deleteContact] = useDeleteContactMutation();
-  const filter = useSelector(state => state.contacts.filter);
-  // useEffect(() => {
-  //   if (filter === '') return contacts;
-  //   return contacts.filter(contact =>
-  //     contact.name.toLowerCase().includes(filter.toLowerCase())
-  //   );
-  // }, [contacts, filter]);
+  const filterQuery = useSelector(state => state.filter.filter);
+
+  let filteredContacts = null;
+  filterQuery === ''
+    ? (filteredContacts = contacts)
+    : (filteredContacts = contacts.filter(contact =>
+        contact.name.toLowerCase().includes(filterQuery.toLowerCase())
+      ));
 
   return (
     <ul className={s.contactsList}>
-      {contacts?.map(({ name, number, id }) => {
+      {filteredContacts?.map(({ name, number, id }) => {
         return (
           <li className={s.contactsItem} key={id}>
             <p>

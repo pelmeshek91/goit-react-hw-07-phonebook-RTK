@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { initialState } from './initialState';
 
 const contactsSlice = createSlice({
-  name: 'contacts',
+  name: 'filter',
   initialState,
   reducers: {
     changeFilter: (state, { payload }) => {
