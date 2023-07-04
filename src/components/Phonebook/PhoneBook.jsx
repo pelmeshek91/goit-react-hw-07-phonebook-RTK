@@ -1,4 +1,3 @@
-import { filteredContacts } from 'redux/contactsSelectors';
 import s from './Phonebook.module.css';
 
 import {
